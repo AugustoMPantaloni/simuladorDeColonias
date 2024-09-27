@@ -1,9 +1,0 @@
- 
-Ciclo para que pasen los dias:
-    Si recursos, comida y energia son suficientes:
-        modificar recursos por dia:
-            - restar x cantidad de agua
-            - restar x cantidad de comida
-            - sumar x cantidad de energia 
-Sino:
-    mostrar al usuario "tu colonia perecio en el intento por falta de recursos o energia "

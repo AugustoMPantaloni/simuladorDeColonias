@@ -3,9 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
     <title>Gestion de colonia</title>
 </head>
 <body>
-    <script src="simulador.js"></script>
+    <header>
+        <h1>¿Todos listo para gestionar tu colonia?</h1>         
+    </header>
+    <main>   
+        <section class="acciones">
+            <div>
+                <h2>¿Como quieres progresar?</h2>
+            </div>
+            <div>    
+                <ul>
+                    <li>
+                        <select>
+                            <option disabled selected>Construir edificios</option>
+                            <option>Casa</option>
+                            <option>Almacen</option>
+                        </select>
+                    </li>
+                    <li>
+                        <button>Buscar agua</button>
+                    </li>
+                    <li>
+                        <button>Buscar comida</button>
+                    </li>
+                    <li>
+                        <button>Buscar recursos</button>
+                    </li>
+                    <li>
+                        <select>
+                            <option disabled selected>Investigar</option>
+                            <option>sin nombre</option>
+                            <option>Sin nombre</option>
+                        </select>
+                    </li>    
+                    <li>
+                        <button>Dormir</button>
+                    </li>
+                </ul>
+            </div>    
+        </section>
+        <section class="historia">
+            <div class="nombreElegido">
+                <input type="text" id="nombreColonia" placeholder="nombre de colonia" required>
+            </div>
+            <div>
+                <h2>Historia de tu colonia</h2>
+            </div>
+            <div class="areaDeHistoria">
+                <textarea rows="30" cols="120" readonly></textarea>
+            </div>
+        </section>
+        <section class="recursos">
+            <div>
+                <div>
+                    <h2>Recursos</h2>    
+                </div>
+                <div>
+                    <ul>
+                        <li>Agua:</li>
+                        <li>Comida:</li>
+                        <li>Materiales:</li>
+                        <li>Energia:</li>
+                    </ul>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <h2>Edificios</h2>    
+                </div>
+                <div>
+                    <ul>
+                        <li>Ayuntamiento:</li>
+                        <li>Casas:</li>
+                        <li>Almacenes:</li>
+                    </ul>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <h2>Colonos</h2>
+                </div>
+                <table>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Edad</th>
+                        <th>Habilidad</th>
+                    </tr>
+                    <tr>
+                        <th>Inexistente</th>
+                        <th>Inexistente</th>
+                        <th>Inexistente</th>
+                    </tr>
+                </table>
+            </div>
+            
+        </section>
+    </main>
+<footer>
+</footer>
+<script src="js/simulador.js"></script>
 </body>
 </html>
