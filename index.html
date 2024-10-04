@@ -8,7 +8,7 @@
 </head>
 <body>
     <header>
-        <h1>¿Todos listo para gestionar tu colonia?</h1>         
+        <h1>Crea, Gestiona y Expande Tu Colonia</h1>         
     </header>
     <main>   
         <section class="acciones">
@@ -18,11 +18,14 @@
             <div>    
                 <ul>
                     <li>
-                        <select>
-                            <option disabled selected>Construir edificios</option>
-                            <option>Casa</option>
-                            <option>Almacen</option>
-                        </select>
+                        <details>
+                            <summary>Construir edificios</summary>
+                            <select>
+                                <option>Casa</option>
+                                <option>Almacen</option>
+                            </select>
+                            <button>Construir</button>
+                        </details>
                     </li>
                     <li>
                         <button>Buscar agua</button>
@@ -34,12 +37,15 @@
                         <button>Buscar recursos</button>
                     </li>
                     <li>
-                        <select>
-                            <option disabled selected>Investigar</option>
-                            <option>sin nombre</option>
-                            <option>Sin nombre</option>
-                        </select>
-                    </li>    
+                        <details>
+                            <summary>Investigar tecnologias</summary>
+                            <select>
+                                <option>Sin opcion</option>
+                                <option>Sin opcion</option>
+                            </select>
+                            <button>Investigar</button>
+                        </details>
+                    </li>  
                     <li>
                         <button>Dormir</button>
                     </li>
@@ -47,11 +53,12 @@
             </div>    
         </section>
         <section class="historia">
-            <div class="nombreElegido">
-                <input type="text" id="nombreColonia" placeholder="nombre de colonia" required>
+            <div class="estilosInput">
+                <input type="text" id="nombreElegidoPorUsario" placeholder="nombre de colonia"  class="nombreColonia">
+                <button id="botonGuardarNombre">Guardar</button>
             </div>
             <div>
-                <h2>Historia de tu colonia</h2>
+                <h2 class="historial-titulo">Historia de tu colonia</h2>
             </div>
             <div class="areaDeHistoria">
                 <textarea rows="30" cols="120" readonly></textarea>
@@ -60,14 +67,17 @@
         <section class="recursos">
             <div>
                 <div>
+                    <h2 id="expositorDeNombre"><!-- nombre de la colonia --></h2>
+                </div>
+                <div>
                     <h2>Recursos</h2>    
                 </div>
                 <div>
                     <ul>
-                        <li>Agua:</li>
-                        <li>Comida:</li>
-                        <li>Materiales:</li>
-                        <li>Energia:</li>
+                        <li>Agua: <div id="agua"> </div> </li>
+                        <li>Comida: <div id="comida"> </div> </li>
+                        <li>Materiales: <div id="materiales"></div> </li>
+                        <li>Energia: <div id="energia"></div> </li>
                     </ul>
                 </div>
             </div>
@@ -77,9 +87,9 @@
                 </div>
                 <div>
                     <ul>
-                        <li>Ayuntamiento:</li>
-                        <li>Casas:</li>
-                        <li>Almacenes:</li>
+                        <li>Ayuntamiento: <div id="ayuntamiento"> </div> </li>
+                        <li>Casas: <div id="casas"> </div> </li>
+                        <li>Almacenes: <div id="almacenes"> </div> </li>
                     </ul>
                 </div>
             </div>
@@ -94,17 +104,13 @@
                         <th>Habilidad</th>
                     </tr>
                     <tr>
-                        <th>Inexistente</th>
-                        <th>Inexistente</th>
-                        <th>Inexistente</th>
+                        <tbody id="tablaColon"></tbody>
                     </tr>
                 </table>
             </div>
             
         </section>
     </main>
-<footer>
-</footer>
-<script src="js/simulador.js"></script>
+<script src="./js/PurebaDom.js"></script>
 </body>
 </html>

@@ -87,6 +87,34 @@ function construirEdificio(){
     }
 }
 
+function buscarMateriales(){
+    let buscarRecolector = colonos.find(buscar => buscar.habilidad === "Recolector")
+    if(!buscarRecolector){
+        alert("Ahora no tienes ningun recolector disponible, espera que alguno se desocupe o busca construir mas casas para reclutar mas colonos.")
+        return;
+    }
+    let opcion = prompt ("¿Todo listo para salir a buscar materiales para construir? \n1.Si(Requiere 1 comida, 1 agua, 2 energia)\n2.No")
+    switch(opcion){
+        case "1":
+            if(recursos.comida >=1 && recursos.agua >=1 && energia >=2){
+                recursos.comida -=1;
+                recursos.agua -=1;
+                recursos.energia -=2;
+                recursos.materiales +=3;
+                alert("Felicidades tus materiales para construir aumentaron en 3 unidades")
+            } else{
+                alert("Tu comida, agua o energia no es suficiente")
+            }
+            break;
+            case "2":
+                alert("No has salido a buscar materiales, recuerda que los necesitas para construir edificios");
+                break;
+            default:
+                alert("Eso no es una opcion valida, prueba de nuevo");
+                break;
+    }
+}
+
 function buscarAgua(){
     let buscarRecolector = colonos.find(buscar => buscar.habilidad === "Recolector")
     if(!buscarRecolector){
@@ -169,22 +197,25 @@ function dormir(){
 // Se creo la funcion para que el usario pueda ver que opciones tiene para interactuar con su colonia
 function accionesUsuario() {
     while (true) {
-        let eleccion = prompt("¿Cómo te gustaría que tu colonia progrese ahora?\n1. Construir un edificio.\n2. Salir a buscar comida.\n3. Salir a buscar agua.\n4. Dormir\n5. Ver el estado actual de tu colonia\n6. Terminar simulacion");
+        let eleccion = prompt("¿Cómo te gustaría que tu colonia progrese ahora?\n1. Construir un edificio.\n2. Salir a buscar materiales.\n3. Salir a buscar comida.\n4. Salir a buscar agua.\n5. Dormir\n6. Ver el estado actual de tu colonia\n7. Terminar simulacion");
         
         switch (eleccion) {
             case "1":
                 construirEdificio();
                 break;
             case "2":
+                buscarMateriales();
+                break;    
+            case "3":
                 buscarComida();
                 break;
-            case "3":
+            case "4":
                 buscarAgua();
                 break;
-            case "4":
+            case "5":
                 dormir();    
                 break;
-            case "5":
+            case "6":
                 alert(`El nombre de tu colonia es: ${nombreColonia}\n` +
                     `---------------------------\n` +
                     `Tienes estos recursos:\nAgua: ${recursos.agua}\nComida: ${recursos.comida}\nMateriales: ${recursos.materiales}\n` +
@@ -195,7 +226,7 @@ function accionesUsuario() {
                     `---------------------------\n` +
                     `Tienes ${energia} de energía.`);
                 break;
-            case "6":
+            case "7":
                 alert("Gracias por probar el simulador, la idea es ir agreandole cosas poco a poco :D");
                 return;
             default:
