@@ -1,4 +1,16 @@
 const mostrarNombre = document.getElementById("expositorDeNombre")
+const botonConfirmar = document.getElementById("botonConfirmar");
+const botonCancelar = document.getElementById ("botonCancelar");
+const mensaje = document.getElementById("mensajeCuadroAcciones");
+const cuadro = document.getElementById("cuadroAcciones");
+const fondo = document.getElementById("fondoOscuro");
+
+function botonCerrarCuadroAcciones (){
+    cuadro.style.display = "block";
+    fondo.style.display = "block";
+    botonConfirmar.style.display = "none";
+    botonCancelar.textContent = "Cerrar";
+}
 
 let recursos = {
     agua: 10,
@@ -20,220 +32,289 @@ let colonos =[
 
 let energia = 50;
 
+// Funciones para que aparezca una alerta luego de que el usario ingresara un nombre de colonia valido o invalido
+function alertaNombreValido() {
+    const mensajeAlerta = document.getElementById("mensajeAlerta");
+    const alertaDiv = document.getElementById("alertaNombreValido");
+    const botonCerrar = document.getElementById("cerrarAlerta");
+
+    // Contenido de la alerta
+    mensajeAlerta.textContent = `🎊 ¡Felicidades! 🎊
+    En el recuadro de la derecha, ¡explora todos los recursos que tendrás a tu disposición para gestionar tu colonia! 🌟💪`;
+
+    // Mostrar la alerta y el botón de cerrar
+    alertaDiv.style.display = "block"; 
+    botonCerrar.style.display = "block"; 
+
+    // Función para cerrar la alerta
+    botonCerrar.onclick = function() {
+        alertaDiv.style.display = "none"; 
+        botonCerrar.style.display = "none"; 
+    };
+}
+function alertaNombreInvalido() {
+    const mensajeAlerta = document.getElementById("mensajeAlertaInvalida");
+    const alertaDiv = document.getElementById("alertaNombreInvalido");
+    const botonCerrar = document.getElementById("cerrarAlertaInvalida");
+
+    // Contenido de la alerta
+    mensajeAlerta.textContent = ("Debes elejir un nombre para tu colonia")
+
+    // Mostrar la alerta y el botón de cerrar
+    alertaDiv.style.display = "block"; 
+    botonCerrar.style.display = "block"; 
+
+    // Función para cerrar la alerta
+    botonCerrar.onclick = function() {
+        alertaDiv.style.display = "none"; 
+        botonCerrar.style.display = "none"; 
+    };
+}
+
+// funcion que inicia toda la simulacion 
 function iniciarColonia(){
     let nombreGuardado = document.getElementById("nombreElegidoPorUsario").value;
 
     if(nombreGuardado === ""){
-        alert ("Debes elejir un nombre para tu colonia")
+        alertaNombreInvalido();
     } else{
         mostrarNombre.textContent = nombreGuardado;
+        alertaNombreValido();
+        document.getElementById("agua").textContent = recursos.agua;
+        document.getElementById("comida").textContent = recursos.comida;
+        document.getElementById("materiales").textContent = recursos.materiales;
+        document.getElementById("energia").textContent = energia;
+        document.getElementById("ayuntamiento").textContent = edificios.ayuntamiento;
+        document.getElementById("casas").textContent = edificios.casas;
+        document.getElementById("almacenes").textContent = edificios.almacen;
 
-        alert(`🎊 ¡Felicidades! 🎊
-En el recuadro de la derecha, ¡explora todos los recursos que tendrás a tu disposición para gestionar tu colonia! 🌟💪`)
-            document.getElementById("agua").textContent = recursos.agua;
-            document.getElementById("comida").textContent = recursos.comida;
-            document.getElementById("materiales").textContent = recursos.materiales;
-            document.getElementById("energia").textContent = energia;
-
-            document.getElementById("ayuntamiento").textContent = edificios.ayuntamiento;
-            document.getElementById("casas").textContent = edificios.casas;
-            document.getElementById("almacenes").textContent = edificios.almacen;
-
-            const tablaColon = document.getElementById("tablaColon")
-            colonos.forEach(colono => {
-                let fila = document.createElement("tr");
-                fila.innerHTML = `<td>${colono.nombre}</td><td>${colono.edad}</td><td>${colono.habilidad}</td>`;
-                tablaColon.appendChild(fila);
-            });
+        const tablaColon = document.getElementById("tablaColon");
+        tablaColon.innerHTML = "";
+        
+        colonos.forEach(colono => {
+            let fila = document.createElement("tr");
+            fila.innerHTML = `<td>${colono.nombre}</td><td>${colono.edad}</td><td>${colono.habilidad}</td>`;
+            tablaColon.appendChild(fila);
+        });
     }
 }
-
 botonGuardarNombre.addEventListener("click", iniciarColonia)
 
-// Se crearon las funciones para las acciones que puede realizar el usuario para gestionar la colonia
+//funcion para actualizar los recursos
+function actualizarRecursos(material, agua, comida, energiaGastada) {
+    recursos.materiales -= material;
+    recursos.agua -= agua;
+    recursos.comida -= comida;
+    energia -= energiaGastada;
+
+    document.getElementById("materiales").textContent = recursos.materiales;
+    document.getElementById("agua").textContent = recursos.agua;
+    document.getElementById("comida").textContent = recursos.comida;
+    document.getElementById("energia").textContent = energia;
+}
+
+/*Funciones y variables para la construccion de edificios, falta agregar que se muestren cuantos recursos necesitas para construir x edificio, lo voy a hacer con un array*/
+const botonConstruir = document.getElementById("botonConstruir");
+const opcionesEdificios = document.getElementById("opcionesEdificios");
 function construirEdificio(){
+    const seleccion = opcionesEdificios.value;
+    
+    function confirmarConstruccion(){
+        switch(seleccion){
+            case "Casa":
+                if(recursos.materiales >=10 && recursos.agua >=2 && recursos.comida >=2 && energia>=10) {
+                    actualizarRecursos(10,2,2,10)
+                    botonCerrarCuadroAcciones();
+                    mensaje.textContent = "felicidades tu colonia aumento sus edificios con 1 casa, ahora tienes mas espacio para colonos"
+                } else{
+                    mensaje.textContent = "No tienes los recursos o energia suficientes"
+                    botonCerrarCuadroAcciones();
+                }
+                    break;
+            case "Almacen":
+                if(recursos.materiales >=15 && recursos.agua >=3 && recursos.comida >=3 && energia>=15){
+                    actualizarRecursos (15,3,3,15)
+                    botonCerrarCuadroAcciones();
+                    mensaje.textContent = "Felicidades ahora tu colonia tiene un almacen mas, puede guardar mas recursos"
+                } else{
+                    botonCerrarCuadroAcciones();
+                    mensaje.textContent = "No tienes los recursos o energia suficientes"
+                }
+                    break;
+        };
+    }
+    function cancelarAccionOCerrar(){
+        cuadro.style.display = "none";
+        fondo.style.display = "none";
+        botonConfirmar.style.display = "block"; 
+        botonCancelar.textContent = "Cancelar"; 
+        botonConfirmar.removeEventListener("click", confirmarConstruccion);
+        
+}
     let buscarConstructor = colonos.find(buscar => buscar.habilidad === "Constructor");
     if(!buscarConstructor){
-        alert("Ahora no tienes ningun constructor disponible, espera que alguno se desocupe o busca construir mas casas para reclutar mas colonos.")
+        botonCerrarCuadroAcciones();
+        mensaje.textContent = "Ahora no tienes ningun constructor disponible, espera que alguno se desocupe o busca construir mas casas para reclutar mas colonos."
+        botonCancelar.addEventListener("click" , cancelarAccionOCerrar);
     return;
+    } else {
+        cuadro.style.display = "block";
+        fondo.style.display = "block";
+        mensaje.textContent = `¿Seguro que quieres construir "${seleccion}"?`;
+        botonConfirmar.addEventListener("click", confirmarConstruccion);
+        botonCancelar.addEventListener("click" , cancelarAccionOCerrar);
 }
-    let opcion = prompt("¿Que edificio quieres construir?\nPara cualquier construccion necesitas al menos 1 colono con la habilidad `constuctor` que este desocupado\n1.Casa (Requiere 10 materiales, 2 agua, 2 comida, 10 energia)\n2.almacen (requiere 15 materiales, 3 agua, 3 comida, 15 energia")
-    switch(opcion){
-        case "1":
-            if(recursos.materiales >=10 && recursos.agua >=2 && recursos.comida >=2 && energia>=10){
-                recursos.materiales -= 10;
-                recursos.agua -= 2;
-                recursos.comida -= 2;
-                energia -=10;
-                edificios.casas += 1;
-                alert("felicidades tu colonia aumento sus edificios con 1 casa, ahora tienes mas espacio para colonos")
-            } else{
-                alert("No tienes los recursos o energia suficientes, sal a buscar recursos o descansa 1 dia para recuperar energia")
-            }
-                break;
-        case "2":
-            if(recursos.materiales >=15 && recursos.agua >=3 && recursos.comida >=3 && energia>=15){
-                recursos.materiales -= 15;
-                recursos.agua -= 3;
-                recursos.comida -= 3;
-                energia -=15;
-                edificios.almacen += 1;
-                alert("Felicidades ahora tu colonia tiene un almacen mas, puede guardar mas recursos")
-            } else{
-                alert("No tienen los recursos o energia suficientes, sal a buscar recursos o descansa 1 dia para recuperar energia")
-            }
-                break;
-            default:
-                alert("No es una opcion valida, escribe el nombre del edificio que quieras consturir")
-                break;
-    }
-}
+};
+botonConstruir.addEventListener("click",construirEdificio);
 
+//Funciones y variables para la busqueda de materiales
+const botonBuscarMateriales = document.getElementById("buscarMateriales");
 function buscarMateriales(){
-    let buscarRecolector = colonos.find(buscar => buscar.habilidad === "Recolector")
-    if(!buscarRecolector){
-        alert("Ahora no tienes ningun recolector disponible, espera que alguno se desocupe o busca construir mas casas para reclutar mas colonos.")
-        return;
-    }
-    let opcion = prompt ("¿Todo listo para salir a buscar materiales para construir? \n1.Si(Requiere 1 comida, 1 agua, 2 energia)\n2.No")
-    switch(opcion){
-        case "1":
-            if(recursos.comida >=1 && recursos.agua >=1 && energia >=2){
-                recursos.comida -=1;
-                recursos.agua -=1;
-                recursos.energia -=2;
-                recursos.materiales +=3;
-                alert("Felicidades tus materiales para construir aumentaron en 3 unidades")
-            } else{
-                alert("Tu comida, agua o energia no es suficiente")
-            }
-            break;
-            case "2":
-                alert("No has salido a buscar materiales, recuerda que los necesitas para construir edificios");
-                break;
-            default:
-                alert("Eso no es una opcion valida, prueba de nuevo");
-                break;
-    }
-}
-
-function buscarAgua(){
-    let buscarRecolector = colonos.find(buscar => buscar.habilidad === "Recolector")
-    if(!buscarRecolector){
-        alert("Ahora no tienes ningun recolector disponible, espera que alguno se desocupe o busca construir mas casas para reclutar mas colonos.")
-        return;
-    }
-    let opcion = prompt("¿Todo listo para salir a buscar agua?\n1.Si(Requiere 1 comida, 2 energia)\n2.No")
-    switch(opcion){
-        case "1":
-            if(recursos.comida >=1 && energia >=2){
-                recursos.comida -= 1;
-                energia -=2;
-                recursos.agua +=3;
-                alert("Felicidades tu agua aumento en 3 y se guardo en el almacen");
-            }else{
-                alert("Tu comida o energia no es suficiente")
-            }
-            break;
-        case"2":
-        alert("No has salido a buscar agua, recuerda que la misma no baje a 0");
-            break;
-        default:
-            alert("Eso no es una opcion valida, prueba de nuevo");
-            break;
-    }
-}
-
-function buscarComida(){
-    let buscarRecolector = colonos.find(buscar => buscar.habilidad === "Recolector")
-    if(!buscarRecolector){
-        alert("Ahora no tienes ningun recolector disponible, espera que alguno se desocupe o busca construir mas casas para reclutar mas colonos.")
-        return;
-    }
-    let opcion = prompt("¿Todo listo para salir a buscar comida?\n1.Si(Requiere 1 agua, 2 energia)\n2.No")
-    switch(opcion){
-        case "1":
-            if(recursos.agua >=1 && energia >=2){
-                recursos.agua -= 1;
-                energia -=2;
-                recursos.comida +=3;
-                alert("Felicidades tu comida aumento en 3 y se guardo en el almacen");
-            } else{
-                alert("Tu agua o energia no es suficiente")
-            }
-            break;
-        case"2":
-        alert("No has salido a buscar comida, recuerda que la misma no baje a 0")
-            break;
-        default:
-            alert("Eso no es una opcion valida, prueba de nuevo")
-            break;
-    }
-}
-
-function dormir(){
-    let opcion = prompt("¿Estas seguro que quieres dormir? esto hara que recuperes energia pero gastaras recursos\n1.Dormir\n2.Seguir trabajando")
-    switch(opcion){
-        case "1":
-            if(recursos.comida>=3 && recursos.agua>=3){
-                recursos.comida-=3;
-                recursos.agua-=3;
-                energia +=5;
-                if (energia > 50) { 
-                    energia = 50;
-                }
-                alert("Tu colonia descanso durante la noche y recuperaste 5 de energia");
-            }else{
-                alert("Tu comida o agua no es suficiente para que tus colonos puedan descansar, tienes que salir a buscar recursos");
-            }
-            break;
-        case "2":
-            alert("Decidiste seguir trabajando, recuerda que la energia no baje a 0");
-            break;
-        default:
-            alert("Eso no es una opcion valida, prueba de nuevo");
-            break;
-    }
-}
-
-// Se creo la funcion para que el usario pueda ver que opciones tiene para interactuar con su colonia
-function accionesUsuario() {
-    while (true) {
-        let eleccion = prompt("¿Cómo te gustaría que tu colonia progrese ahora?\n1. Construir un edificio.\n2. Salir a buscar materiales.\n3. Salir a buscar comida.\n4. Salir a buscar agua.\n5. Dormir\n6. Ver el estado actual de tu colonia\n7. Terminar simulacion");
-        
-        switch (eleccion) {
-            case "1":
-                construirEdificio();
-                break;
-            case "2":
-                buscarMateriales();
-                break;    
-            case "3":
-                buscarComida();
-                break;
-            case "4":
-                buscarAgua();
-                break;
-            case "5":
-                dormir();    
-                break;
-            case "6":
-                alert(`El nombre de tu colonia es: ${nombreColonia}\n` +
-                    `---------------------------\n` +
-                    `Tienes estos recursos:\nAgua: ${recursos.agua}\nComida: ${recursos.comida}\nMateriales: ${recursos.materiales}\n` +
-                    `---------------------------\n` +
-                    `Tienes estos edificios:\nAyuntamiento: ${edificios.ayuntamiento}\nCasas: ${edificios.casas}\nAlmacén: ${edificios.almacen}\n` +
-                    `---------------------------\n` +
-                    `Estos son tus colonos:\n${colonos.map(colono => `Nombre: ${colono.nombre}, Edad: ${colono.edad}, Habilidad: ${colono.habilidad}`).join('\n')}\n` +
-                    `---------------------------\n` +
-                    `Tienes ${energia} de energía.`);
-                break;
-            case "7":
-                alert("Gracias por probar el simulador, la idea es ir agreandole cosas poco a poco :D");
-                return;
-            default:
-                alert("No elegiste ninguna opción válida, vuelve a intentarlo.");
-                break;
+    function confirmarBuscarMateriales(){
+        if(recursos.comida >=1 && recursos.agua >=1 && energia >=2){
+            actualizarRecursos(0,1,1,2)
+            document.getElementById("materiales").textContent = recursos.materiales +=3;
+            botonCerrarCuadroAcciones();
+            mensaje.textContent = "Felicidades tus materiales para construir aumentaron en 3 unidades";
+        } else{
+            mensaje.textContent = "Tu comida, agua o energia no es suficiente";
+            botonCerrarCuadroAcciones();
         }
     }
+    function cancelarAccionOCerrar(){
+        cuadro.style.display = "none";
+        fondo.style.display = "none";
+        botonConfirmar.style.display = "block"; 
+        botonCancelar.textContent = "Cancelar"; 
+        botonConfirmar.removeEventListener("click", confirmarBuscarMateriales);
+        
 }
+
+let buscarRecolector = colonos.find(buscar => buscar.habilidad === "Recolector")
+if(!buscarRecolector){
+    botonCerrarCuadroAcciones();
+    mensaje.textContent = "Ahora no tienes ningun recolector disponible, espera que alguno se desocupe o busca construir mas casas para reclutar mas colonos."
+    botonCancelar.addEventListener("click" , cancelarAccionOCerrar);
+return;
+} else {
+    cuadro.style.display = "block";
+    fondo.style.display = "block";
+    mensaje.textContent = "¿Todo listo para salir a buscar materiales para construir? necesital al menos 1 de comida, 1 de agua y 2 de energia para recolectar 3 de materiales";
+    botonConfirmar.addEventListener("click", confirmarBuscarMateriales);
+    botonCancelar.addEventListener("click" , cancelarAccionOCerrar);
+}
+};
+botonBuscarMateriales.addEventListener("click", buscarMateriales)
+
+//Funciones y variables para la busqueda de agua
+const botonBuscarAgua = document.getElementById("buscarAgua");
+function buscarAgua(){
+    function confirmarBuscarAgua (){
+        if(recursos.comida >=1 && energia >=2){
+            actualizarRecursos(0,0,1,2)
+            document.getElementById("agua").textContent = recursos.agua +=3;
+            botonCerrarCuadroAcciones();
+            mensaje.textContent = "Felicidades tu agua aumento en 3 y se guardo en el almacen";
+
+        }else{
+            botonCerrarCuadroAcciones();
+            mensaje.textContent = "Tu comida o energia no es suficiente";
+        }
+    }
+    function cancelarAccionOCerrar(){
+        cuadro.style.display = "none";
+        fondo.style.display = "none";
+        botonConfirmar.style.display = "block"; 
+        botonCancelar.textContent = "Cancelar"; 
+        botonConfirmar.removeEventListener("click", confirmarBuscarAgua);
+        
+}
+    let buscarRecolector = colonos.find(buscar => buscar.habilidad === "Recolector")
+    if(!buscarRecolector){
+        botonCerrarCuadroAcciones();
+        mensaje.textContent = "Ahora no tienes ningun recolector disponible, espera que alguno se desocupe o busca construir mas casas para reclutar mas colonos."
+        botonCancelar.addEventListener("click" , cancelarAccionOCerrar);
+        return;
+    } else {
+        cuadro.style.display = "block";
+        fondo.style.display = "block";
+        mensaje.textContent = "¿Todo listo para salir a buscar agua? necesits al menos 1 de comida y 2 de energia para recolectar 3 de agua";
+        botonConfirmar.addEventListener("click", confirmarBuscarAgua);
+        botonCancelar.addEventListener("click" , cancelarAccionOCerrar);
+}
+};
+botonBuscarAgua.addEventListener("click", buscarAgua);
+
+//Funciones y variables para la busqueda de comida
+const botonBuscarComida = document.getElementById ("buscarComida");
+function buscarComida(){
+    function confirmarBuscarComida(){
+        if(recursos.agua >=1 && energia >=2){
+            actualizarRecursos(0,1,0,2);
+            document.getElementById("comida").textContent = recursos.comida +=3;
+            botonCerrarCuadroAcciones ();
+            mensaje.textContent = "Felicidades tu comida aumento en 3 y se guardo en el almacen";
+        } else{
+            botonCerrarCuadroAcciones ()
+            mensaje.textContent = "Tu agua o energia no es suficiente";
+        }
+    }
+    function cancelarAccionOCerrar(){
+        cuadro.style.display = "none";
+        fondo.style.display = "none";
+        botonConfirmar.style.display = "block"; 
+        botonCancelar.textContent = "Cancelar"; 
+        botonConfirmar.removeEventListener("click", confirmarBuscarComida);
+        
+}
+    let buscarRecolector = colonos.find(buscar => buscar.habilidad === "Recolector")
+    if(!buscarRecolector){
+        botonCerrarCuadroAcciones ();
+        mensaje.textContent = "Ahora no tienes ningun recolector disponible, espera que alguno se desocupe o busca construir mas casas para reclutar mas colonos.";
+        botonCancelar.addEventListener("click" , cancelarAccionOCerrar);
+        return;
+    } else {
+        cuadro.style.display = "block";
+        fondo.style.display = "block";
+        mensaje.textContent = "¿Todo listo para salir a buscar comida? necesital al menos 1 de agua y 2 de energia para recolectar 3 de comida";
+        botonConfirmar.addEventListener("click", confirmarBuscarComida);
+        botonCancelar.addEventListener("click" , cancelarAccionOCerrar);
+    }
+};
+botonBuscarComida.addEventListener("click", buscarComida);
+
+//Funciones y variables para la accion de dormir
+const botonDormir = document.getElementById("dormir")
+function dormir(){
+    function confirmarDormir (){
+        if(recursos.comida>=3 && recursos.agua>=3){
+            actualizarRecursos(0,3,3,0);
+            document.getElementById("energia").textContent = energia +=5;
+            if (energia > 50) { 
+                energia = 50;
+            }
+            botonCerrarCuadroAcciones();
+            mensaje.textContent = "Tu colonia descanso durante la noche y recuperaste 5 de energia";
+        }else{
+            botonCerrarCuadroAcciones();
+            mensaje.textContent = "Tu comida o agua no es suficiente para que tus colonos puedan descansar, tienes que salir a buscar recursos";
+        }
+    }    
+    function cancelarAccionOCerrar(){
+        cuadro.style.display = "none";
+        fondo.style.display = "none";
+        botonConfirmar.style.display = "block"; 
+        botonCancelar.textContent = "Cancelar"; 
+        botonConfirmar.removeEventListener("click", confirmarDormir);
+        
+}
+cuadro.style.display = "block";
+fondo.style.display = "block";
+mensaje.textContent = "¿Estas seguro que quieres dormir? esto hara que recuperes 5 de energia pero necesitas al menos 3 de agua y 3 de comida para poder dormir";
+botonConfirmar.addEventListener("click", confirmarDormir);
+botonCancelar.addEventListener("click" , cancelarAccionOCerrar);
+};
+
+botonDormir.addEventListener("click", dormir);
+
+

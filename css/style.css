@@ -258,3 +258,113 @@ h2 {
     background-color: #5C3A1A; 
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
+
+.alertaValida {
+    display: none;
+    background-color: #419b4e;
+    color: #ffffff;
+    padding: 15px;
+    border: 2px solid #f5c6cb;
+    border-radius: 8px;
+    font-size: 16px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+}
+
+.alertaInvalida {
+    display: none; /* Oculta la alerta inicialmente */
+    background-color: #ffdddd; /* Color de fondo */
+    color: #d8000c; /* Color del texto */
+    padding: 15px; /* Espaciado interno */
+    border: 2px solid #f5c6cb; /* Borde */
+    border-radius: 8px; /* Bordes redondeados */
+    font-size: 16px; /* Tamaño de la fuente */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra */
+    position: fixed; /* Para centrar la alerta */
+    top: 50%; /* Centro vertical */
+    left: 50%; /* Centro horizontal */
+    transform: translate(-50%, -50%); /* Centrado */
+    z-index: 1000; /* Asegúrate de que esté encima de otros elementos */
+}
+
+button#cerrarAlerta {
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: #d8000c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button#cerrarAlertaInvalida {
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: #d8000c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#fondoOscuro {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 999; 
+}
+
+#cuadroAcciones {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #f9f3e1; 
+    border: 5px solid #7b3e19; 
+    padding: 20px;
+    width: 300px;
+    z-index: 1000;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); 
+    border-radius: 10px; 
+    text-align: center;
+    font-family: 'Uncial Antiqua', serif;
+    color: #4c2e0a; 
+}
+
+#cuadroAcciones p {
+    margin-bottom: 20px;
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+
+#cuadroAcciones button {
+    background-color: #7b3e19;
+    color: #f9f3e1; 
+    border: 2px solid #4c2e0a; 
+    font-family: 'Uncial Antiqua', serif; 
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 5px;
+    transition: background-color 0.3s ease;
+    padding: .625rem;
+}
+
+#cuadroAcciones button:hover {
+    background-color: #4c2e0a; 
+}
+
+#botonesAcciones {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}

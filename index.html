@@ -20,21 +20,21 @@
                     <li>
                         <details>
                             <summary>Construir edificios</summary>
-                            <select>
+                            <select id="opcionesEdificios">
                                 <option>Casa</option>
                                 <option>Almacen</option>
                             </select>
-                            <button>Construir</button>
+                            <button id="botonConstruir">Construir</button>
                         </details>
                     </li>
                     <li>
-                        <button>Buscar agua</button>
+                        <button id="buscarAgua">Buscar agua</button>
                     </li>
                     <li>
-                        <button>Buscar comida</button>
+                        <button id="buscarComida">Buscar comida</button>
                     </li>
                     <li>
-                        <button>Buscar recursos</button>
+                        <button id="buscarMateriales">Buscar materiales</button>
                     </li>
                     <li>
                         <details>
@@ -47,7 +47,7 @@
                         </details>
                     </li>  
                     <li>
-                        <button>Dormir</button>
+                        <button id="dormir">Dormir</button>
                     </li>
                 </ul>
             </div>    
@@ -110,6 +110,23 @@
             </div>
             
         </section>
+
+        <div id="alertaNombreValido" class="alertaValida">
+            <p id="mensajeAlerta"></p>
+            <button id="cerrarAlerta">Cerrar</button>
+        </div>
+        <div id="alertaNombreInvalido" class="alertaInvalida">
+            <p id="mensajeAlertaInvalida"></p>
+            <button id="cerrarAlertaInvalida">Cerrar</button>
+        </div>
+        <div id="fondoOscuro"></div>
+        <div id="cuadroAcciones" class="estilosCuadroAcciones">
+            <p id="mensajeCuadroAcciones"></p>
+            <div id="botonesAcciones">
+                <button id="botonConfirmar">Confirmar</button>
+                <button id="botonCancelar">Cancelar</button>
+            </div>
+        </div>
     </main>
 <script src="./js/PurebaDom.js"></script>
 </body>
