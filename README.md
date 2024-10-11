@@ -17,3 +17,4 @@ Este es mi primer proyecto desarrollado con JavaScript, realizado como entrega p
 -Implementar nuevas acciones que los jugadores puedan realizar en la colonia.
 
 -Mejorar la interfaz para que sea completamente responsiva.
+
