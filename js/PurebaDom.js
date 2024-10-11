@@ -70,11 +70,7 @@ function alertaNombreInvalido() {
         botonCerrar.style.display = "none"; 
     };
 }
-function registroDeAcciones (){
-    if( nombreGuardado !== "") {
-        areaHistoria.textContent = `se eligio ${nombreGuardado.value} como nombre de colonia` 
-    }
-}
+
 
 // funcion que inicia toda la simulacion 
 function iniciarColonia(){
@@ -130,7 +126,7 @@ function construirEdificio(){
             case "Casa":
                 if(recursos.materiales >=10 && recursos.agua >=2 && recursos.comida >=2 && energia>=10) {
                     actualizarRecursos(10,2,2,10)
-                    edificios.casas += 1;
+                    document.getElementById("casas").textContent = edificios.casas += 1;
                     botonCerrarCuadroAcciones();
                     mensaje.textContent = "felicidades tu colonia aumento sus edificios con 1 casa, ahora tienes mas espacio para colonos"
                 } else{
@@ -141,7 +137,7 @@ function construirEdificio(){
             case "Almacen":
                 if(recursos.materiales >=15 && recursos.agua >=3 && recursos.comida >=3 && energia>=15){
                     actualizarRecursos (15,3,3,15)
-                    edificios.almacen += 1;
+                    document.getElementById("almacenes").textContent = edificios.almacen += 1;
                     botonCerrarCuadroAcciones();
                     mensaje.textContent = "Felicidades ahora tu colonia tiene un almacen mas, puede guardar mas recursos"
                 } else{
