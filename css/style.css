@@ -148,7 +148,9 @@ h2 {
     border-bottom: 2px solid #8B4513;
     padding-bottom: 5px;
 }
-
+ul {
+    list-style-type: none;
+}
 .recursos ul {
     list-style-type: none;
     padding: 0;
@@ -367,4 +369,49 @@ button#cerrarAlertaInvalida {
     display: flex;
     justify-content: center;
     gap: 10px;
+}
+.guardarProgreso {
+    background-color: #00bfff; 
+    color: #fff; 
+    border: 2px solid #1e90ff; 
+    padding: 12px 24px;
+    font-family: 'Cinzel', serif; 
+    font-size: 18px; 
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    
+    position: absolute;
+    bottom: 150px; 
+    left: 50%;
+    transform: translateX(-50%); 
+}
+
+.guardarProgreso:hover {
+    background-color: #1e90ff; 
+    transform: translateX(-50%) scale(1.05); 
+}
+
+.guardarProgreso:active {
+    transform: translateX(-50%) scale(0.95); 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.reiniciarProgreso {
+    position: absolute;
+    top: 20px; 
+    right: 20px; 
+    background-color: #d9534f; 
+    color: white; 
+    border: none; 
+    border-radius: 5px; 
+    padding: 10px 15px; 
+    font-size: 14px; 
+    cursor: pointer; 
+    transition: background-color 0.3s; 
+}
+
+.reiniciarProgreso:hover {
+    background-color: #c9302c; 
 }

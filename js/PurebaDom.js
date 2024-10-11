@@ -1,16 +1,13 @@
 const mostrarNombre = document.getElementById("expositorDeNombre")
 const botonConfirmar = document.getElementById("botonConfirmar");
 const botonCancelar = document.getElementById ("botonCancelar");
+const botonGuardar = document.getElementById ("guardarProgreso")
+const botonReinicar = document.getElementById ("reiniciarProgreso");
 const mensaje = document.getElementById("mensajeCuadroAcciones");
 const cuadro = document.getElementById("cuadroAcciones");
 const fondo = document.getElementById("fondoOscuro");
 
-function botonCerrarCuadroAcciones (){
-    cuadro.style.display = "block";
-    fondo.style.display = "block";
-    botonConfirmar.style.display = "none";
-    botonCancelar.textContent = "Cerrar";
-}
+let nombreGuardado = ""
 
 let recursos = {
     agua: 10,
@@ -31,6 +28,15 @@ let colonos =[
 ] 
 
 let energia = 50;
+
+
+// funcion para que el usario cierre los cuadros de acciones / notifiaciones.
+function cuadroAcciones (){
+    cuadro.style.display = "block";
+    fondo.style.display = "block";
+    botonConfirmar.style.display = "none";
+    botonCancelar.textContent = "Cerrar";
+}
 
 // Funciones para que aparezca una alerta luego de que el usario ingresara un nombre de colonia valido o invalido
 function alertaNombreValido() {
@@ -71,16 +77,130 @@ function alertaNombreInvalido() {
     };
 }
 
+// Funcion para reiniciar partida
+function reiniciarPartida() {
+    localStorage.removeItem("estadoActual"); 
+    nombreGuardado = "";  
+    
+    recursos = {
+        agua: null,
+        comida: null,
+        materiales: null,
+    };
+    edificios = {
+        ayuntamiento: null,
+        casas: null,
+        almacen: null,
+    };
+    colonos = [];  
+    energia = null; 
 
-// funcion que inicia toda la simulacion 
-function iniciarColonia(){
-    let nombreGuardado = document.getElementById("nombreElegidoPorUsario").value;
+    mostrarNombre.textContent = "";
+    document.getElementById("agua").textContent = recursos.agua;
+    document.getElementById("comida").textContent = recursos.comida;
+    document.getElementById("materiales").textContent = recursos.materiales;
+    document.getElementById("energia").textContent = energia;
+    document.getElementById("ayuntamiento").textContent = edificios.ayuntamiento;
+    document.getElementById("casas").textContent = edificios.casas;
+    document.getElementById("almacenes").textContent = edificios.almacen
 
-    if(nombreGuardado === ""){
+    const tablaColon = document.getElementById("tablaColon");
+    tablaColon.innerHTML = "";  
+
+    function cancelarAccionOCerrar(){
+        cuadro.style.display = "none";
+        fondo.style.display = "none";
+}
+    cuadroAcciones();
+    mensaje.textContent = "La partida ha sido reiniciada.";
+    botonCancelar.addEventListener("click" , cancelarAccionOCerrar )
+}
+botonReinicar.addEventListener("click",reiniciarPartida);
+
+// Funcion para cargar partida 
+function cargarPartida (){
+    const coloniaGuardada = localStorage.getItem("estadoActual");
+    if(coloniaGuardada){
+        const estadoActual = JSON.parse(coloniaGuardada);
+
+        nombreGuardado = estadoActual.nombre;
+        recursos = estadoActual.recursos;
+        edificios = estadoActual.edificios;
+        colonos = estadoActual.colonos;
+
+        mostrarNombre.textContent = nombreGuardado;
+        document.getElementById("agua").textContent = recursos.agua;
+        document.getElementById("comida").textContent = recursos.comida;
+        document.getElementById("materiales").textContent = recursos.materiales;
+        document.getElementById("energia").textContent = energia;
+        document.getElementById("ayuntamiento").textContent = edificios.ayuntamiento;
+        document.getElementById("casas").textContent = edificios.casas;
+        document.getElementById("almacenes").textContent = edificios.almacen;
+
+        const tablaColon = document.getElementById("tablaColon");
+        tablaColon.innerHTML = ""; 
+
+        colonos.forEach(colono => {
+            let fila = document.createElement("tr");
+            fila.innerHTML = `<td>${colono.nombre}</td><td>${colono.edad}</td><td>${colono.habilidad}</td>`;
+            tablaColon.appendChild(fila);
+        });
+        
+    }
+}
+document.addEventListener("DOMContentLoaded", () => {
+    cargarPartida(); 
+});
+
+//Funcion para que el usario guarde el estado actual de su colonia
+function guardarPartida(){
+    const estadoActual = {
+        nombre: nombreGuardado,
+        recursos : recursos,
+        edificios: edificios,
+        colonos: colonos,
+    };
+
+    function cancelarAccionOCerrar(){
+        cuadro.style.display = "none";
+        fondo.style.display = "none";
+}
+
+    localStorage.setItem ("estadoActual", JSON.stringify(estadoActual));
+
+    cuadroAcciones();
+    mensaje.textContent = "El progreso de tu partida se guardo";
+    botonCancelar.addEventListener("click" , cancelarAccionOCerrar );
+}
+botonGuardar.addEventListener("click", guardarPartida);
+
+// funcion que iniciar toda la simulacion 
+function iniciarColonia() {
+    nombreGuardado = document.getElementById("nombreElegidoPorUsario").value;
+
+    if (nombreGuardado === "") {
         alertaNombreInvalido();
-    } else{
+    } else {
         mostrarNombre.textContent = nombreGuardado;
         alertaNombreValido();
+
+        recursos = {
+            agua: 10,
+            comida: 10,
+            materiales: 30
+        };
+        edificios = {
+            ayuntamiento: 1,
+            casas: 3,
+            almacen: 1
+        };
+        colonos = [
+            { nombre: "Augusto", edad: "26", habilidad: "Constructor" },
+            { nombre: "Miqueas", edad: "24", habilidad: "Recolector" },
+            { nombre: "Abril", edad: "22", habilidad: "Científica" }
+        ];
+        energia = 50;
+
         document.getElementById("agua").textContent = recursos.agua;
         document.getElementById("comida").textContent = recursos.comida;
         document.getElementById("materiales").textContent = recursos.materiales;
@@ -91,7 +211,6 @@ function iniciarColonia(){
 
         const tablaColon = document.getElementById("tablaColon");
         tablaColon.innerHTML = "";
-        
         colonos.forEach(colono => {
             let fila = document.createElement("tr");
             fila.innerHTML = `<td>${colono.nombre}</td><td>${colono.edad}</td><td>${colono.habilidad}</td>`;
@@ -99,9 +218,10 @@ function iniciarColonia(){
         });
     }
 }
-botonGuardarNombre.addEventListener("click", iniciarColonia)
 
-const areaHistoria = document.getElementById ("areaHistoria")
+botonGuardarNombre.addEventListener("click", iniciarColonia);
+
+
 //funcion para actualizar los recursos
 function actualizarRecursos(material, agua, comida, energiaGastada) {
     recursos.materiales -= material;
@@ -127,21 +247,21 @@ function construirEdificio(){
                 if(recursos.materiales >=10 && recursos.agua >=2 && recursos.comida >=2 && energia>=10) {
                     actualizarRecursos(10,2,2,10)
                     document.getElementById("casas").textContent = edificios.casas += 1;
-                    botonCerrarCuadroAcciones();
+                    cuadroAcciones();
                     mensaje.textContent = "felicidades tu colonia aumento sus edificios con 1 casa, ahora tienes mas espacio para colonos"
                 } else{
                     mensaje.textContent = "No tienes los recursos o energia suficientes"
-                    botonCerrarCuadroAcciones();
+                    cuadroAcciones();
                 }
                     break;
             case "Almacen":
                 if(recursos.materiales >=15 && recursos.agua >=3 && recursos.comida >=3 && energia>=15){
                     actualizarRecursos (15,3,3,15)
                     document.getElementById("almacenes").textContent = edificios.almacen += 1;
-                    botonCerrarCuadroAcciones();
+                    cuadroAcciones();
                     mensaje.textContent = "Felicidades ahora tu colonia tiene un almacen mas, puede guardar mas recursos"
                 } else{
-                    botonCerrarCuadroAcciones();
+                    cuadroAcciones();
                     mensaje.textContent = "No tienes los recursos o energia suficientes"
                 }
                     break;
@@ -157,7 +277,7 @@ function construirEdificio(){
 }
     let buscarConstructor = colonos.find(buscar => buscar.habilidad === "Constructor");
     if(!buscarConstructor){
-        botonCerrarCuadroAcciones();
+        cuadroAcciones();
         mensaje.textContent = "Ahora no tienes ningun constructor disponible, espera que alguno se desocupe o busca construir mas casas para reclutar mas colonos."
         botonCancelar.addEventListener("click" , cancelarAccionOCerrar);
     return;
@@ -178,11 +298,11 @@ function buscarMateriales(){
         if(recursos.comida >=1 && recursos.agua >=1 && energia >=2){
             actualizarRecursos(0,1,1,2)
             document.getElementById("materiales").textContent = recursos.materiales +=3;
-            botonCerrarCuadroAcciones();
+            cuadroAcciones();
             mensaje.textContent = "Felicidades tus materiales para construir aumentaron en 3 unidades";
         } else{
             mensaje.textContent = "Tu comida, agua o energia no es suficiente";
-            botonCerrarCuadroAcciones();
+            cuadroAcciones();
         }
     }
     function cancelarAccionOCerrar(){
@@ -196,7 +316,7 @@ function buscarMateriales(){
 
 let buscarRecolector = colonos.find(buscar => buscar.habilidad === "Recolector")
 if(!buscarRecolector){
-    botonCerrarCuadroAcciones();
+    cuadroAcciones();
     mensaje.textContent = "Ahora no tienes ningun recolector disponible, espera que alguno se desocupe o busca construir mas casas para reclutar mas colonos."
     botonCancelar.addEventListener("click" , cancelarAccionOCerrar);
 return;
@@ -217,11 +337,11 @@ function buscarAgua(){
         if(recursos.comida >=1 && energia >=2){
             actualizarRecursos(0,0,1,2)
             document.getElementById("agua").textContent = recursos.agua +=3;
-            botonCerrarCuadroAcciones();
+            cuadroAcciones();
             mensaje.textContent = "Felicidades tu agua aumento en 3 y se guardo en el almacen";
 
         }else{
-            botonCerrarCuadroAcciones();
+            cuadroAcciones();
             mensaje.textContent = "Tu comida o energia no es suficiente";
         }
     }
@@ -235,7 +355,7 @@ function buscarAgua(){
 }
     let buscarRecolector = colonos.find(buscar => buscar.habilidad === "Recolector")
     if(!buscarRecolector){
-        botonCerrarCuadroAcciones();
+        cuadroAcciones();
         mensaje.textContent = "Ahora no tienes ningun recolector disponible, espera que alguno se desocupe o busca construir mas casas para reclutar mas colonos."
         botonCancelar.addEventListener("click" , cancelarAccionOCerrar);
         return;
@@ -256,10 +376,10 @@ function buscarComida(){
         if(recursos.agua >=1 && energia >=2){
             actualizarRecursos(0,1,0,2);
             document.getElementById("comida").textContent = recursos.comida +=3;
-            botonCerrarCuadroAcciones ();
+            cuadroAcciones ();
             mensaje.textContent = "Felicidades tu comida aumento en 3 y se guardo en el almacen";
         } else{
-            botonCerrarCuadroAcciones ()
+            cuadroAcciones ()
             mensaje.textContent = "Tu agua o energia no es suficiente";
         }
     }
@@ -273,7 +393,7 @@ function buscarComida(){
 }
     let buscarRecolector = colonos.find(buscar => buscar.habilidad === "Recolector")
     if(!buscarRecolector){
-        botonCerrarCuadroAcciones ();
+        cuadroAcciones ();
         mensaje.textContent = "Ahora no tienes ningun recolector disponible, espera que alguno se desocupe o busca construir mas casas para reclutar mas colonos.";
         botonCancelar.addEventListener("click" , cancelarAccionOCerrar);
         return;
@@ -297,10 +417,10 @@ function dormir(){
             if (energia > 50) { 
                 energia = 50;
             }
-            botonCerrarCuadroAcciones();
+            cuadroAcciones();
             mensaje.textContent = "Tu colonia descanso durante la noche y recuperaste 5 de energia";
         }else{
-            botonCerrarCuadroAcciones();
+            cuadroAcciones();
             mensaje.textContent = "Tu comida o agua no es suficiente para que tus colonos puedan descansar, tienes que salir a buscar recursos";
         }
     }    
@@ -320,5 +440,4 @@ botonCancelar.addEventListener("click" , cancelarAccionOCerrar);
 };
 
 botonDormir.addEventListener("click", dormir);
-
 
