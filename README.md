@@ -19,7 +19,7 @@ Este es mi primer proyecto desarrollado con JavaScript, realizado como entrega p
 -Mejorar la interfaz para que sea completamente responsiva.
 
 
-## Si estas interesado aca abajo dejo la proxima mejoras que voy a ir implementado con el tiempo.
+## Si estas interesado aca abajo dejo las proximas mejoras que voy a ir implementado con el tiempo.
 
 1. **Sistema de Misiones o Objetivos**
    - Crear misiones o objetivos que los jugadores puedan completar para ganar recompensas, como "Reúne 10 unidades de madera" o "Construye un nuevo edificio".
