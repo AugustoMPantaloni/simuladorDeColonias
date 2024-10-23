@@ -10,16 +10,6 @@ Este es mi primer proyecto desarrollado con JavaScript, realizado como entrega p
 
         Próximas mejoras:
 
--Hacer el simulador cada vez más interactivo, añadiendo nuevas formas de interacción para los usuarios.
-
--Agregar eventos que influyan en la simulación.
-
--Implementar nuevas acciones que los jugadores puedan realizar en la colonia.
-
--Mejorar la interfaz para que sea completamente responsiva.
-
-
-## Si estas interesado aca abajo dejo las proximas mejoras que voy a ir implementado con el tiempo.
 
 1. **Sistema de Misiones o Objetivos**
    - Crear misiones o objetivos que los jugadores puedan completar para ganar recompensas, como "Reúne 10 unidades de madera" o "Construye un nuevo edificio".
