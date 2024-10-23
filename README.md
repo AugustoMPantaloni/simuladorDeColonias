@@ -54,6 +54,6 @@ Este es mi primer proyecto desarrollado con JavaScript, realizado como entrega p
     - Añadir un sistema donde los colonos expresen sus necesidades o preocupaciones, influenciando las decisiones del jugador.
 
 15. **Modo Multijugador**
-    - Considerar agregar un modo multijugador donde varios jugadores puedan colaborar o competir entre sí.
+    - Agregar un modo multijugador donde varios jugadores puedan colaborar o competir entre sí.
 
-¡Diviértete jugando y desarrollando tu simulador de gestión de colonia!
+
