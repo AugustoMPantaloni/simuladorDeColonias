@@ -1,11 +1,12 @@
 const mostrarNombre = document.getElementById("expositorDeNombre")
 const botonConfirmar = document.getElementById("botonConfirmar");
 const botonCancelar = document.getElementById ("botonCancelar");
-const botonGuardar = document.getElementById ("guardarProgreso")
+const botonGuardar = document.getElementById ("guardarProgreso");
 const botonReinicar = document.getElementById ("reiniciarProgreso");
 const mensaje = document.getElementById("mensajeCuadroAcciones");
 const cuadro = document.getElementById("cuadroAcciones");
 const fondo = document.getElementById("fondoOscuro");
+
 
 let nombreGuardado = ""
 
@@ -81,7 +82,9 @@ function alertaNombreInvalido() {
 function reiniciarPartida() {
     localStorage.removeItem("estadoActual"); 
     nombreGuardado = "";  
-    
+    areaHistoria.textContent = "";
+    document.getElementById("nombreElegidoPorUsario").value="";
+    document.getElementById("nombreElegidoPorUsario").placeholder = "Nombre de colonia";
     recursos = {
         agua: null,
         comida: null,
@@ -106,7 +109,6 @@ function reiniciarPartida() {
 
     const tablaColon = document.getElementById("tablaColon");
     tablaColon.innerHTML = "";  
-
     function cancelarAccionOCerrar(){
         cuadro.style.display = "none";
         fondo.style.display = "none";
@@ -127,6 +129,7 @@ function cargarPartida (){
         recursos = estadoActual.recursos;
         edificios = estadoActual.edificios;
         colonos = estadoActual.colonos;
+        areaHistoria.textContent = estadoActual.historia;
 
         mostrarNombre.textContent = nombreGuardado;
         document.getElementById("agua").textContent = recursos.agua;
@@ -159,6 +162,7 @@ function guardarPartida(){
         recursos : recursos,
         edificios: edificios,
         colonos: colonos,
+        historia: areaHistoria.textContent,
     };
 
     function cancelarAccionOCerrar(){
@@ -181,8 +185,10 @@ function iniciarColonia() {
     if (nombreGuardado === "") {
         alertaNombreInvalido();
     } else {
-        mostrarNombre.textContent = nombreGuardado;
         alertaNombreValido();
+        mostrarNombre.textContent = nombreGuardado;
+        areaHistoria.textContent = `- Felicitaciones, tu colonia ahora se llama ${nombreGuardado}. Este nombre marcará el comienzo de una nueva era. ¡Que los logros estén a la altura del título!`
+
 
         recursos = {
             agua: 10,
@@ -218,9 +224,7 @@ function iniciarColonia() {
         });
     }
 }
-
 botonGuardarNombre.addEventListener("click", iniciarColonia);
-
 
 //funcion para actualizar los recursos
 function actualizarRecursos(material, agua, comida, energiaGastada) {
@@ -249,6 +253,7 @@ function construirEdificio(){
                     document.getElementById("casas").textContent = edificios.casas += 1;
                     cuadroAcciones();
                     mensaje.textContent = "felicidades tu colonia aumento sus edificios con 1 casa, ahora tienes mas espacio para colonos"
+                    areaHistoria.textContent = "- ¡Enhorabuena! Una nueva casa ha sido construida, brindando refugio y seguridad a tus colonos. ¡Tu colonia sigue creciendo!\n" + areaHistoria.textContent;
                 } else{
                     mensaje.textContent = "No tienes los recursos o energia suficientes"
                     cuadroAcciones();
@@ -260,6 +265,7 @@ function construirEdificio(){
                     document.getElementById("almacenes").textContent = edificios.almacen += 1;
                     cuadroAcciones();
                     mensaje.textContent = "Felicidades ahora tu colonia tiene un almacen mas, puede guardar mas recursos"
+                    areaHistoria.textContent = "- ¡Éxito! Tu nuevo almacén está listo, asegurando que tus recursos estén bien guardados y listos para usar. ¡La prosperidad de tu colonia avanza!\n" + areaHistoria.textContent;
                 } else{
                     cuadroAcciones();
                     mensaje.textContent = "No tienes los recursos o energia suficientes"
@@ -300,6 +306,7 @@ function buscarMateriales(){
             document.getElementById("materiales").textContent = recursos.materiales +=3;
             cuadroAcciones();
             mensaje.textContent = "Felicidades tus materiales para construir aumentaron en 3 unidades";
+            areaHistoria.textContent = "- Tras una expedición por los alrededores, tu colono a logrado recolectar 3 valiosas unidades de materiales. ¡El esfuerzo ha valido la pena!\n" + areaHistoria.textContent;
         } else{
             mensaje.textContent = "Tu comida, agua o energia no es suficiente";
             cuadroAcciones();
@@ -334,15 +341,16 @@ botonBuscarMateriales.addEventListener("click", buscarMateriales)
 const botonBuscarAgua = document.getElementById("buscarAgua");
 function buscarAgua(){
     function confirmarBuscarAgua (){
-        if(recursos.comida >=1 && energia >=2){
+        if(recursos.comida >=1 && recursos.agua >=1 && energia >=2){
             actualizarRecursos(0,0,1,2)
             document.getElementById("agua").textContent = recursos.agua +=3;
             cuadroAcciones();
             mensaje.textContent = "Felicidades tu agua aumento en 3 y se guardo en el almacen";
+            areaHistoria.textContent = "- El agua es vida, y hoy tu búsqueda fue exitosa: tu colono regreso con 3 preciosas unidades de agua. ¡La colonia prospera gracias a tu liderazgo!\n" + areaHistoria.textContent;
 
         }else{
             cuadroAcciones();
-            mensaje.textContent = "Tu comida o energia no es suficiente";
+            mensaje.textContent = "No tienes los recursos o energia suficiente para salir a buscar agua";
         }
     }
     function cancelarAccionOCerrar(){
@@ -362,7 +370,14 @@ function buscarAgua(){
     } else {
         cuadro.style.display = "block";
         fondo.style.display = "block";
-        mensaje.textContent = "¿Todo listo para salir a buscar agua? necesits al menos 1 de comida y 2 de energia para recolectar 3 de agua";
+        mensaje.innerHTML = `
+        <p>¿Todo listo para salir a buscar agua? vas a gastar :</p>
+        <ul>
+            <li>- 1 de comida</li>
+            <li>- 2 de energía</li>
+        </ul>
+        <br>
+        <p> para recolectar 3 unidades de agua </p>`;
         botonConfirmar.addEventListener("click", confirmarBuscarAgua);
         botonCancelar.addEventListener("click" , cancelarAccionOCerrar);
 }
@@ -378,6 +393,7 @@ function buscarComida(){
             document.getElementById("comida").textContent = recursos.comida +=3;
             cuadroAcciones ();
             mensaje.textContent = "Felicidades tu comida aumento en 3 y se guardo en el almacen";
+            areaHistoria.textContent = "- Te aventuraste en busca de comida y, después de un arduo esfuerzo, tu colono encontro 3 raciones. ¡Los demas colonos estarán agradecidos!\n" + areaHistoria.textContent;
         } else{
             cuadroAcciones ()
             mensaje.textContent = "Tu agua o energia no es suficiente";
@@ -400,25 +416,32 @@ function buscarComida(){
     } else {
         cuadro.style.display = "block";
         fondo.style.display = "block";
-        mensaje.textContent = "¿Todo listo para salir a buscar comida? necesital al menos 1 de agua y 2 de energia para recolectar 3 de comida";
+        mensaje.innerHTML = `
+        <p>¿Todo listo para salir a buscar comida? vas a gastar :</p>
+        <ul>
+            <li>- 1 de agua</li>
+            <li>- 2 de energía</li>
+        </ul>
+        <br>
+        <p> para recolectar 3 unidades de comida </p>`;
         botonConfirmar.addEventListener("click", confirmarBuscarComida);
         botonCancelar.addEventListener("click" , cancelarAccionOCerrar);
     }
 };
 botonBuscarComida.addEventListener("click", buscarComida);
-
 //Funciones y variables para la accion de dormir
 const botonDormir = document.getElementById("dormir")
 function dormir(){
     function confirmarDormir (){
         if(recursos.comida>=3 && recursos.agua>=3){
-            actualizarRecursos(0,3,3,0);
+            actualizarRecursos(0,4,4,0);
             document.getElementById("energia").textContent = energia +=5;
             if (energia > 50) { 
                 energia = 50;
             }
             cuadroAcciones();
             mensaje.textContent = "Tu colonia descanso durante la noche y recuperaste 5 de energia";
+            areaHistoria.textContent = "- La colonia ha descansado plácidamente bajo las estrellas y recuperó 5 puntos de energía. ¡Están listos para afrontar un nuevo día de desafíos!\n" + areaHistoria.textContent;
         }else{
             cuadroAcciones();
             mensaje.textContent = "Tu comida o agua no es suficiente para que tus colonos puedan descansar, tienes que salir a buscar recursos";
@@ -434,10 +457,16 @@ function dormir(){
 }
 cuadro.style.display = "block";
 fondo.style.display = "block";
-mensaje.textContent = "¿Estas seguro que quieres dormir? esto hara que recuperes 5 de energia pero necesitas al menos 3 de agua y 3 de comida para poder dormir";
+mensaje.innerHTML = `
+<p>¿Estas seguro que quiere dormir? vas a gastar :</p>
+<ul>
+    <li>- 4 de comida</li>
+    <li>- 4 de agua</li>
+</ul>
+<br>
+<p> para recuperar 5 de energia. </p>`;
 botonConfirmar.addEventListener("click", confirmarDormir);
 botonCancelar.addEventListener("click" , cancelarAccionOCerrar);
 };
-
 botonDormir.addEventListener("click", dormir);
 
