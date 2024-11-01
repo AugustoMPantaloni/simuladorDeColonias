@@ -48,7 +48,7 @@ function tutorial (){
         const botonConfirmarTutorial = document.getElementById("botonConfirmarTutorial");
         cuadroTutorial.style.display = "block";
         fondo.style.display = "block";
-        mensajeTutorial.textContent = "¡Saludos, noble líder de colonias! Prepárate para emprender tu aventura. Te enseñaremos los secretos de este reino para que inicies tu reinado con buen augurio y sin tropiezos.";
+        mensajeTutorial.textContent = "¡Hola, líder de colonias! Estás a punto de comenzar tu aventura. Te enseñaremos lo que necesitas saber para que inicies tu reinado de manera exitosa y sin complicaciones.";
         botonConfirmarTutorial.textContent = "COMENZEMOS";
         botonConfirmarTutorial.addEventListener("click", tutorialNombreColonia);
         function tutorialNombreColonia (){
