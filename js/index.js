@@ -6,14 +6,15 @@ const botonReinicar = document.getElementById ("reiniciarProgreso");
 const mensaje = document.getElementById("mensajeCuadroAcciones");
 const cuadro = document.getElementById("cuadroAcciones");
 const fondo = document.getElementById("fondoOscuro");
-
+const climaDiv = document.getElementById("clima");
 
 let nombreGuardado = ""
 
 let recursos = {
     agua: 10,
     comida: 10,
-    materiales: 30
+    madera: 20,
+    piedra: 20,
 };
 
 let edificios = {
@@ -22,7 +23,7 @@ let edificios = {
     almacen: 1,
 };
 
-let colonos =[
+let colonos = [
     {nombre:"Augusto", edad:"26", habilidad:"Constructor"},
     {nombre:"Miqueas", edad:"24", habilidad:"Recolector"},
     {nombre:"Abril", edad:"22", habilidad:"Cientifica"},
@@ -31,13 +32,106 @@ let colonos =[
 let energia = 50;
 
 
-// funcion para que el usario cierre los cuadros de acciones / notifiaciones.
+// funcion para los cuadros de acciones / notifiaciones.
 function cuadroAcciones (){
     cuadro.style.display = "block";
     fondo.style.display = "block";
     botonConfirmar.style.display = "none";
     botonCancelar.textContent = "Cerrar";
 }
+
+// funcion para el tutorial 
+function tutorial (){
+    if (!localStorage.getItem("tutorialVisto")){
+        const mensajeTutorial = document.getElementById("mensajeCuadroAccionesTutorial");
+        const cuadroTutorial = document.getElementById("cuadroAccionesTutorial");
+        const botonConfirmarTutorial = document.getElementById("botonConfirmarTutorial");
+        cuadroTutorial.style.display = "block";
+        fondo.style.display = "block";
+        mensajeTutorial.textContent = "¡Saludos, noble líder de colonias! Prepárate para emprender tu aventura. Te enseñaremos los secretos de este reino para que inicies tu reinado con buen augurio y sin tropiezos.";
+        botonConfirmarTutorial.textContent = "COMENZEMOS";
+        botonConfirmarTutorial.addEventListener("click", tutorialNombreColonia);
+        function tutorialNombreColonia (){
+            cuadroTutorial.style.display = "block";
+            fondo.style.display = "block";
+            mensajeTutorial.textContent = "Antes de embarcarte en esta aventura, elige un nombre memorable para tu colonia. Así, recibirás los recursos y colonos que te acompañarán en este nuevo capítulo y no olvides darle al boton de guardar."
+            const nombreElegidoPorUsario = document.getElementById("nombreElegidoPorUsario")
+            const botonGuardarNombre = document.getElementById("botonGuardarNombre")
+            nombreElegidoPorUsario.style.zIndex = "1000";
+            botonGuardarNombre.style.zIndex = "1000";
+            botonConfirmarTutorial.textContent = "SIGAMOS"
+            botonConfirmarTutorial.removeEventListener("click", tutorialNombreColonia);
+            botonConfirmarTutorial.addEventListener("click", tutorialRecursos);
+            function tutorialRecursos(){
+                cuadroTutorial.style.display = "block";
+                fondo.style.display = "block";
+                mensajeTutorial.textContent = "Una vez que hayas elegido el nombre de tu colonia, a tu derecha podrás ver todos los recursos y edificios con los que comenzarás, así como la información de tus valientes colonos.";
+                const recuadroRecursos = document.getElementById("recuadroRecursos");
+                nombreElegidoPorUsario.style.zIndex = "0";
+                botonGuardarNombre.style.zIndex = "0";
+                recuadroRecursos.style.zIndex ="1000";
+                botonConfirmarTutorial.textContent = "ENTENDIDO"
+                botonConfirmarTutorial.removeEventListener("click", tutorialRecursos);
+                botonConfirmarTutorial.addEventListener("click", tutorialAcciones);
+                function tutorialAcciones(){
+                    cuadroTutorial.style.display = "block";
+                    fondo.style.display = "block";
+                    mensajeTutorial.textContent ="A tu izquierda, encontrarás todas las acciones que podrás emprender para hacer prosperar tu colonia y no olvides que para cada accion necesitaras ciertos recursos y energia.";
+                    const recuadroAcciones = document.getElementById ("recuadroAcciones");
+                    recuadroRecursos.style.zIndex ="0";
+                    recuadroAcciones.style.zIndex = "1000";
+                    botonConfirmarTutorial.removeEventListener("click", tutorialAcciones);
+                    botonConfirmarTutorial.addEventListener("click", tutorialAreaHistoria);
+                    function tutorialAreaHistoria(){
+                        cuadroTutorial.style.display = "block";
+                        fondo.style.display = "block";
+                        mensajeTutorial.textContent = "También es muy importante que, en el centro (en el recuadro blanco), se registrarán todas las acciones que vayas realizando, permitiéndote consultarlas en cualquier momento.";
+                        recuadroAcciones.style.zIndex = "0";
+                        areaHistoria.style.zIndex = "1000";
+                        botonConfirmarTutorial.removeEventListener ("click", tutorialAreaHistoria);
+                        botonConfirmarTutorial.addEventListener ("click", tutorialClima);
+                        function tutorialClima (){
+                            cuadroTutorial.style.display = "block";
+                            fondo.style.display = "block";
+                            mensajeTutorial.textContent = "En el recuadro ubicado en la parte superior derecha, podrás visualizar el clima actual de tu colonia. Esta información se actualiza en tiempo real, así que no pierdas de vista las condiciones climáticas, ya que pueden influir en algunas acciones que decidas llevar a cabo. (Ten en cuenta que esta funcionalidad aún está en desarrollo)."
+                            areaHistoria.style.zIndex = "0";
+                            climaDiv.style.zIndex ="1000";
+                            botonConfirmarTutorial.removeEventListener ("click", tutorialClima);
+                            botonConfirmarTutorial.addEventListener ("click", tutorialGuardarReiniciar);
+                            function tutorialGuardarReiniciar(){
+                                cuadroTutorial.style.display = "block";
+                                fondo.style.display = "block";
+                                mensajeTutorial.textContent ="Y por último, recuerda que, antes de partir, ¡siempre debes guardar tu colonia utilizando el botón de 'Guardar Progreso' que se encuentra abajo! Así, cuando regreses, todo estará tal como lo dejaste. Además, en la parte superior derecha encontrarás un botón para reiniciar tu colonia desde cero, en caso de que no todo saliera como esperabas.";
+                                climaDiv.style.zIndex ="0"
+                                botonGuardar.style.zIndex = "1000";
+                                botonReinicar.style.zIndex = "1000";
+                                botonConfirmarTutorial.removeEventListener ("click", tutorialGuardarReiniciar)
+                                botonConfirmarTutorial.addEventListener ("click", finTutorial);
+                                function finTutorial(){
+                                    cuadroTutorial.style.display = "block";
+                                    fondo.style.display = "block";
+                                    mensajeTutorial.textContent = "¡Bien hecho! Has terminado el tutorial y ahora estás listo para empezar a gestionar tu colonia. ¡Buena suerte y disfruta de tu aventura!";
+                                    botonGuardar.style.zIndex = "0";
+                                    botonReinicar.style.zIndex = "0";
+                                    botonConfirmarTutorial.textContent = "FINALIZAR LA LECCION";
+                                    botonConfirmarTutorial.removeEventListener ("click", finTutorial)
+                                    botonConfirmarTutorial.addEventListener ("click",cerrarTutorial);
+                                    localStorage.setItem("tutorialVisto", "true");
+                                    function cerrarTutorial(){
+                                        cuadroTutorial.style.display = "none";
+                                        fondo.style.display = "none";
+                                        botonConfirmarTutorial.removeEventListener("click", cerrarTutorial)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}  
+tutorial();
 
 // Funciones para que aparezca una alerta luego de que el usario ingresara un nombre de colonia valido o invalido
 function alertaNombreValido() {
@@ -80,6 +174,7 @@ function alertaNombreInvalido() {
 
 // Funcion para reiniciar partida
 function reiniciarPartida() {
+    localStorage.removeItem("tutorialVisto");
     localStorage.removeItem("estadoActual"); 
     nombreGuardado = "";  
     areaHistoria.textContent = "";
@@ -88,7 +183,8 @@ function reiniciarPartida() {
     recursos = {
         agua: null,
         comida: null,
-        materiales: null,
+        madera: null,
+        piedra: null,
     };
     edificios = {
         ayuntamiento: null,
@@ -101,7 +197,8 @@ function reiniciarPartida() {
     mostrarNombre.textContent = "";
     document.getElementById("agua").textContent = recursos.agua;
     document.getElementById("comida").textContent = recursos.comida;
-    document.getElementById("materiales").textContent = recursos.materiales;
+    document.getElementById("madera").textContent = recursos.madera;
+    document.getElementById("piedra").textContent = recursos.piedra;
     document.getElementById("energia").textContent = energia;
     document.getElementById("ayuntamiento").textContent = edificios.ayuntamiento;
     document.getElementById("casas").textContent = edificios.casas;
@@ -134,7 +231,8 @@ function cargarPartida (){
         mostrarNombre.textContent = nombreGuardado;
         document.getElementById("agua").textContent = recursos.agua;
         document.getElementById("comida").textContent = recursos.comida;
-        document.getElementById("materiales").textContent = recursos.materiales;
+        document.getElementById("madera").textContent = recursos.madera;
+        document.getElementById("piedra").textContent = recursos.piedra;
         document.getElementById("energia").textContent = energia;
         document.getElementById("ayuntamiento").textContent = edificios.ayuntamiento;
         document.getElementById("casas").textContent = edificios.casas;
@@ -155,7 +253,7 @@ document.addEventListener("DOMContentLoaded", () => {
     cargarPartida(); 
 });
 
-//Funcion para que el usario guarde el estado actual de su colonia
+//Funcion para que el usario guarde partida
 function guardarPartida(){
     const estadoActual = {
         nombre: nombreGuardado,
@@ -193,7 +291,8 @@ function iniciarColonia() {
         recursos = {
             agua: 10,
             comida: 10,
-            materiales: 30
+            madera: 20,
+            piedra: 20,
         };
         edificios = {
             ayuntamiento: 1,
@@ -209,7 +308,8 @@ function iniciarColonia() {
 
         document.getElementById("agua").textContent = recursos.agua;
         document.getElementById("comida").textContent = recursos.comida;
-        document.getElementById("materiales").textContent = recursos.materiales;
+        document.getElementById("madera").textContent = recursos.madera;
+        document.getElementById("piedra").textContent = recursos.piedra;
         document.getElementById("energia").textContent = energia;
         document.getElementById("ayuntamiento").textContent = edificios.ayuntamiento;
         document.getElementById("casas").textContent = edificios.casas;
@@ -227,13 +327,15 @@ function iniciarColonia() {
 botonGuardarNombre.addEventListener("click", iniciarColonia);
 
 //funcion para actualizar los recursos
-function actualizarRecursos(material, agua, comida, energiaGastada) {
-    recursos.materiales -= material;
+function actualizarRecursos(madera, piedra, agua, comida, energiaGastada) {
+    recursos.madera -= madera;
+    recursos.piedra -= piedra;
     recursos.agua -= agua;
     recursos.comida -= comida;
     energia -= energiaGastada;
 
-    document.getElementById("materiales").textContent = recursos.materiales;
+    document.getElementById("madera").textContent = recursos.madera;
+    document.getElementById("piedra").textContent = recursos.piedra;
     document.getElementById("agua").textContent = recursos.agua;
     document.getElementById("comida").textContent = recursos.comida;
     document.getElementById("energia").textContent = energia;
@@ -248,8 +350,8 @@ function construirEdificio(){
     function confirmarConstruccion(){
         switch(seleccion){
             case "Casa":
-                if(recursos.materiales >=10 && recursos.agua >=2 && recursos.comida >=2 && energia>=10) {
-                    actualizarRecursos(10,2,2,10)
+                if(recursos.madera >=10 && recursos.piedra >=5 && recursos.agua >=2 && recursos.comida >=2 && energia>=10) {
+                    actualizarRecursos(10,5,2,1,10)
                     document.getElementById("casas").textContent = edificios.casas += 1;
                     cuadroAcciones();
                     mensaje.textContent = "felicidades tu colonia aumento sus edificios con 1 casa, ahora tienes mas espacio para colonos"
@@ -260,8 +362,8 @@ function construirEdificio(){
                 }
                     break;
             case "Almacen":
-                if(recursos.materiales >=15 && recursos.agua >=3 && recursos.comida >=3 && energia>=15){
-                    actualizarRecursos (15,3,3,15)
+                if(recursos.madera >=15 && recursos.piedra >=10 && recursos.agua >=3 && recursos.comida >=3 && energia>=15){
+                    actualizarRecursos (15,10,3,3,15)
                     document.getElementById("almacenes").textContent = edificios.almacen += 1;
                     cuadroAcciones();
                     mensaje.textContent = "Felicidades ahora tu colonia tiene un almacen mas, puede guardar mas recursos"
@@ -302,11 +404,12 @@ const botonBuscarMateriales = document.getElementById("buscarMateriales");
 function buscarMateriales(){
     function confirmarBuscarMateriales(){
         if(recursos.comida >=1 && recursos.agua >=1 && energia >=2){
-            actualizarRecursos(0,1,1,2)
-            document.getElementById("materiales").textContent = recursos.materiales +=3;
+            actualizarRecursos(0,0,1,1,2)
+            document.getElementById("madera").textContent = recursos.madera +=5;
+            document.getElementById("piedra").textContent = recursos.piedra +=3;
             cuadroAcciones();
             mensaje.textContent = "Felicidades tus materiales para construir aumentaron en 3 unidades";
-            areaHistoria.textContent = "- Tras una expedición por los alrededores, tu colono a logrado recolectar 3 valiosas unidades de materiales. ¡El esfuerzo ha valido la pena!\n" + areaHistoria.textContent;
+            areaHistoria.textContent = "- Tras una expedición por los alrededores, tu colono a logrado recolectar 5 valiosas unidades de madera y 3 de piedra. ¡El esfuerzo ha valido la pena!\n" + areaHistoria.textContent;
         } else{
             mensaje.textContent = "Tu comida, agua o energia no es suficiente";
             cuadroAcciones();
@@ -330,7 +433,15 @@ return;
 } else {
     cuadro.style.display = "block";
     fondo.style.display = "block";
-    mensaje.textContent = "¿Todo listo para salir a buscar materiales para construir? necesital al menos 1 de comida, 1 de agua y 2 de energia para recolectar 3 de materiales";
+    mensaje.innerHTML =`
+<p>¿Todo listo para salir a buscar materiales? vas a gastar :</p>
+<ul>
+    <li>- 1 de comida</li>
+    <li>- 1 de agua</li>
+    <li>- 2 de energía</li>
+</ul>
+<br>
+<p> para recolectar 5 unidades de madera y 3 unidades de pierda </p>`;
     botonConfirmar.addEventListener("click", confirmarBuscarMateriales);
     botonCancelar.addEventListener("click" , cancelarAccionOCerrar);
 }
@@ -342,7 +453,7 @@ const botonBuscarAgua = document.getElementById("buscarAgua");
 function buscarAgua(){
     function confirmarBuscarAgua (){
         if(recursos.comida >=1 && recursos.agua >=1 && energia >=2){
-            actualizarRecursos(0,0,1,2)
+            actualizarRecursos(0,0,0,1,2)
             document.getElementById("agua").textContent = recursos.agua +=3;
             cuadroAcciones();
             mensaje.textContent = "Felicidades tu agua aumento en 3 y se guardo en el almacen";
@@ -389,7 +500,7 @@ const botonBuscarComida = document.getElementById ("buscarComida");
 function buscarComida(){
     function confirmarBuscarComida(){
         if(recursos.agua >=1 && energia >=2){
-            actualizarRecursos(0,1,0,2);
+            actualizarRecursos(0,0,1,0,2);
             document.getElementById("comida").textContent = recursos.comida +=3;
             cuadroAcciones ();
             mensaje.textContent = "Felicidades tu comida aumento en 3 y se guardo en el almacen";
@@ -429,12 +540,13 @@ function buscarComida(){
     }
 };
 botonBuscarComida.addEventListener("click", buscarComida);
+
 //Funciones y variables para la accion de dormir
 const botonDormir = document.getElementById("dormir")
 function dormir(){
     function confirmarDormir (){
         if(recursos.comida>=3 && recursos.agua>=3){
-            actualizarRecursos(0,4,4,0);
+            actualizarRecursos(0,0,4,4,0);
             document.getElementById("energia").textContent = energia +=5;
             if (energia > 50) { 
                 energia = 50;
@@ -469,4 +581,23 @@ botonConfirmar.addEventListener("click", confirmarDormir);
 botonCancelar.addEventListener("click" , cancelarAccionOCerrar);
 };
 botonDormir.addEventListener("click", dormir);
+
+// Llamada a la API de clima
+const obtenerDatosClimas = async () => {
+    const response = await fetch("https://api.openweathermap.org/data/2.5/weather?lat=-31.4173391&lon=-64.183319&appid=9b2f9ee46630bfbb8e21919b20bcd495&lang=es");
+    const datosClima = await response.json();
+
+     // Convertir temperatura de Kelvin a Celsius
+    const temperaturaCelsius = (datosClima.main.temp - 273.15).toFixed(2);
+    
+    climaDiv.innerHTML = `
+            <h2>Clima en Tu Colonia: ¿Qué Esperar Hoy?</h2>
+            <p>Temperatura: ${temperaturaCelsius} °C</p>
+            <p>Precipitaciones: ${datosClima.rain ? (datosClima.rain['1h'] || 0) : 0} mm</p>
+            <p>Condición: ${datosClima.weather[0].description}</p>
+            <p>Humedad: ${datosClima.main.humidity}%</p>
+            <p>Viento: ${datosClima.wind.speed} m/s</p>
+    `;
+}
+obtenerDatosClimas();
 

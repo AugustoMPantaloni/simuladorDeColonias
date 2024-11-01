@@ -9,10 +9,11 @@
 </head>
 <body>
     <header>
-        <h1>Crea, Gestiona y Expande Tu Colonia</h1>         
+        <h1>Crea, Gestiona y Expande Tu Colonia</h1>   
+        <div id="clima" class="estilosClima"></div>      
     </header>
     <main>   
-        <section class="acciones">
+        <section class="acciones" id="recuadroAcciones">
             <div>
                 <h2>¿Como quieres progresar?</h2>
             </div>
@@ -53,7 +54,7 @@
                 </ul>
             </div>    
         </section>
-        <section class="historia">
+        <section class="historia" id="recuadroHistoria">
             <div class="estilosInput">
                 <input type="text" id="nombreElegidoPorUsario" placeholder="nombre de colonia"  class="nombreColonia">
                 <button id="botonGuardarNombre">Guardar</button>
@@ -65,7 +66,7 @@
                 <textarea  id="areaHistoria" rows="30" cols="120" readonly></textarea>
             </div>
         </section>
-        <section class="recursos">
+        <section class="recursos" id="recuadroRecursos">
             <div>
                 <div>
                     <h2 id="expositorDeNombre"><!-- nombre de la colonia --></h2>
@@ -77,7 +78,8 @@
                     <ul>
                         <li>Agua: <div id="agua"> </div> </li>
                         <li>Comida: <div id="comida"> </div> </li>
-                        <li>Materiales: <div id="materiales"></div> </li>
+                        <li>Madera: <div id="madera"></div> </li>
+                        <li>Piedra: <div id="piedra"></div> </li>
                         <li>Energia: <div id="energia"></div> </li>
                     </ul>
                 </div>
@@ -111,6 +113,7 @@
             </div>
             
         </section>
+        
 
         <button id="guardarProgreso" class="guardarProgreso">Guardar Progreso</button>
         <button id="reiniciarProgreso" class="reiniciarProgreso">Reiniciar Partida</button>
@@ -125,6 +128,7 @@
         </div>
 
         <div id="fondoOscuro"></div>
+
         <div id="cuadroAcciones" class="estilosCuadroAcciones">
             <p id="mensajeCuadroAcciones"></p>
             <div id="botonesAcciones">
@@ -132,7 +136,15 @@
                 <button id="botonCancelar">Cancelar</button>
             </div>
         </div>
+
+        <div id="cuadroAccionesTutorial" class="estilosCuadroAcciones">
+            <p id="mensajeCuadroAccionesTutorial"></p>
+            <div id="botonesAccionesTutorial">
+                <button id="botonConfirmarTutorial">Confirmar</button>
+
+            </div>
+        </div>
     </main>
-<script src="./js/PurebaDom.js"></script>
+<script src="./js/index.js"></script>
 </body>
 </html>
